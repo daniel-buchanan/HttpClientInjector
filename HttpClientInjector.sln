@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CC13C142-7B3C-4FE8-8181-B9FA732FFEA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClientInjector", "src\HttpClientInjector\HttpClientInjector.csproj", "{BF387F7E-4C56-4E1B-AD14-1B3F6B21F032}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClientInjector.Tests", "test\HttpClientInjector.Tests\HttpClientInjector.Tests.csproj", "{FE3DF7D5-DF2D-49A3-9F3E-E4683D44D547}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF387F7E-4C56-4E1B-AD14-1B3F6B21F032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF387F7E-4C56-4E1B-AD14-1B3F6B21F032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF387F7E-4C56-4E1B-AD14-1B3F6B21F032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF387F7E-4C56-4E1B-AD14-1B3F6B21F032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE3DF7D5-DF2D-49A3-9F3E-E4683D44D547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3DF7D5-DF2D-49A3-9F3E-E4683D44D547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE3DF7D5-DF2D-49A3-9F3E-E4683D44D547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE3DF7D5-DF2D-49A3-9F3E-E4683D44D547}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BF387F7E-4C56-4E1B-AD14-1B3F6B21F032} = {CC13C142-7B3C-4FE8-8181-B9FA732FFEA9}
+	EndGlobalSection
+EndGlobal

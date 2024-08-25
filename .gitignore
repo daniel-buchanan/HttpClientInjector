@@ -394,5 +394,12 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
+# macOS
+.DS_Store
+
 # JetBrains Rider
 *.sln.iml
+.idea/
+.idea/**
+**/.idea/
+**/.idea/**

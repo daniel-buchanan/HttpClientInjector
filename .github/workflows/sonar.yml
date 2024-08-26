@@ -63,7 +63,7 @@ jobs:
 
           dotnet build --no-incremental HttpClientInjector.sln 
 
-          ./.coverlet/coverlet ./tests/HttpClientInjector.Tests/bin/Debug/net8.0/HttpClientInjector.Tests.dll \
+          ./.coverlet/coverlet ./test/HttpClientInjector.Tests/bin/Debug/net8.0/HttpClientInjector.Tests.dll \
               --target "dotnet" \
               --targetargs "test --no-build" \
               -f=opencover \

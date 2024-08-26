@@ -28,11 +28,11 @@ jobs:
       - name: Run Tests
         shell: bash
         run: |
-          dotnet test ${{ github.workspace }}/test/HttpClientInjector.Tests.csproj
+          dotnet test ${{ github.workspace }}/test/HttpClientInjector.Tests/HttpClientInjector.Tests.csproj
   
   build:
     runs-on: ubuntu-latest
-    needs: [tests]
+    needs: [tests,sonar]
     name: Build
     steps:
       - uses: actions/checkout@v2

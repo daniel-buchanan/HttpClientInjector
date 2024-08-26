@@ -43,7 +43,7 @@ public class FullUpTests
 
         // Assert
         service.Should().NotBeNull();
-        service.Client.Should().NotBeNull();
+        service?.Client.Should().NotBeNull();
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class FullUpTests
         AssertHeaders(service.Client, "Bearer", token);
     }
 
-    private void AssertHeaders(HttpClient client, string scheme, string? value = null)
+    private static void AssertHeaders(HttpClient client, string scheme, string? value = null)
     {
         client.DefaultRequestHeaders.Authorization.Should().NotBeNull();
         client.DefaultRequestHeaders.Authorization?.Scheme.Should().Be(scheme);

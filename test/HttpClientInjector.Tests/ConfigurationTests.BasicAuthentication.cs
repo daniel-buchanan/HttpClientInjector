@@ -32,14 +32,12 @@ public partial class ConfigurationTests
             .Be(value);
     }
 
-    public static IEnumerable<object[]> BasicAuthenticationTests
-    {
-        get
+    public static TheoryData<IBasicAuthentication, string, string> BasicAuthenticationTests =>
+        new()
         {
-            yield return [new BasicAuthentication().SetCredential("user", "name"), "Basic", "dXNlcjpuYW1l"];
-            yield return [new BasicAuthentication().SetCredential(null, null), "Basic", BasicAuthentication.EncodeHeader(null,null)];
-        }
-    }
+            {new BasicAuthentication().SetCredential("user", "name"), "Basic", "dXNlcjpuYW1l"},
+            {new BasicAuthentication().SetCredential(null, null), "Basic", BasicAuthentication.EncodeHeader(null,null)}
+        };
 
     [Theory]
     [MemberData(nameof(BasicAuthenticationBuilderTests))]
@@ -65,12 +63,9 @@ public partial class ConfigurationTests
             .Be(expected);
     }
     
-    public static IEnumerable<object[]> BasicAuthenticationBuilderTests
-    {
-        get
+    public static TheoryData<string, string, string> BasicAuthenticationBuilderTests =>
+        new()
         {
-            yield return ["bob", "smith", BasicAuthentication.EncodeHeader("bob", "smith")];
-            
-        }
-    }
+            {"bob", "smith", BasicAuthentication.EncodeHeader("bob", "smith")}
+        };
 }

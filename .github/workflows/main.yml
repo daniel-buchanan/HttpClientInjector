@@ -40,7 +40,7 @@ jobs:
         shell: bash
         run: |
           dotnet publish \
-            ${{ github.workspace }}/src/HttpClientInjector.csproj \
+            ${{ github.workspace }}/src/HttpClientInjector/HttpClientInjector.csproj \
             -c Release \
             -p:Version=${FULL_PACKAGE_VERSION} \
             -o ./output

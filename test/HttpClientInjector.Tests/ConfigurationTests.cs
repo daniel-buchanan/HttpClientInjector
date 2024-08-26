@@ -7,7 +7,7 @@ namespace HttpClientInjector.Tests;
 
 public partial class ConfigurationTests
 {
-    private readonly IHttpClientConfigurationBuilder _builder;
+    private readonly HttpClientConfigurationBuilder _builder;
     
     public ConfigurationTests()
     {
@@ -33,14 +33,12 @@ public partial class ConfigurationTests
             .Satisfy(h => h.Value == expected);
     }
 
-    public static IEnumerable<object[]> AcceptEncodingTests
-    {
-        get
+    public static TheoryData<Func<IHttpClientConfigurationBuilder, IHttpClientConfigurationBuilder>, string> AcceptEncodingTests =>
+        new()
         {
-            yield return [(IHttpClientConfigurationBuilder b) => b.WithCompression(), "br"];
-        }
-    }
-    
+            {b => b.WithCompression(), "br"}
+        };
+
     [Theory]
     [MemberData(nameof(AcceptTests))]
     public void AcceptSetCorrectly(Func<IHttpClientConfigurationBuilder, IHttpClientConfigurationBuilder> method, string expected)
@@ -59,12 +57,10 @@ public partial class ConfigurationTests
             .Satisfy(h => h.MediaType == expected);
     }
     
-    public static IEnumerable<object[]> AcceptTests
-    {
-        get
+    public static TheoryData<Func<IHttpClientConfigurationBuilder, IHttpClientConfigurationBuilder>, string> AcceptTests =>
+        new()
         {
-            yield return [(IHttpClientConfigurationBuilder b) => b.WithJsonEncoding(), "application/json"];
-            yield return [(IHttpClientConfigurationBuilder b) => b.WithXmlEncoding(), "text/xml"];
-        }
-    }
+            { b => b.WithJsonEncoding(), "application/json" },
+            { b => b.WithXmlEncoding(), "text/xml" }
+        };
 }

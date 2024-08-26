@@ -59,15 +59,13 @@ public partial class ConfigurationTests
             .Be(value);
     }
 
-    public static IEnumerable<object[]> ProvidedAuthenticationTests
-    {
-        get
+    public static TheoryData<IClientAuthentication, string, string> ProvidedAuthenticationTests =>
+        new()
         {
-            yield return [new BasicAuthentication().SetCredential("user", "name"), "Basic", "dXNlcjpuYW1l"];
-            yield return [new BearerAuthentication().SetCredential("token"), "Bearer", "token"];
-        }
-    }
-    
+            {new BasicAuthentication().SetCredential("user", "name"), "Basic", "dXNlcjpuYW1l"},
+            {new BearerAuthentication().SetCredential("token"), "Bearer", "token"}
+        };
+
     [Theory]
     [MemberData(nameof(ProvidedAuthenticationFunctionTests))]
     public void WithAuthenticationFunctionProvidedSucceeds(Func<IClientAuthentication> auth, string scheme, string value)
@@ -92,15 +90,13 @@ public partial class ConfigurationTests
             .Be(value);
     }
     
-    public static IEnumerable<object[]> ProvidedAuthenticationFunctionTests
-    {
-        get
+    public static TheoryData<Func<IClientAuthentication>, string, string> ProvidedAuthenticationFunctionTests =>
+        new()
         {
-            yield return [() => new BasicAuthentication().SetCredential("user", "name"), "Basic", "dXNlcjpuYW1l"];
-            yield return [() => new BearerAuthentication().SetCredential("token"), "Bearer", "token"];
-        }
-    }
-    
+            {() => new BasicAuthentication().SetCredential("user", "name"), "Basic", "dXNlcjpuYW1l"},
+            {() => new BearerAuthentication().SetCredential("token"), "Bearer", "token"}
+        };
+
     [Theory]
     [MemberData(nameof(ProvidedAuthenticationBuilderTests))]
     public void WithAuthenticationBuilderProvidedSucceeds(Func<IServiceProvider, IClientAuthentication> auth, string scheme, string value)
@@ -125,12 +121,10 @@ public partial class ConfigurationTests
             .Be(value);
     }
     
-    public static IEnumerable<object[]> ProvidedAuthenticationBuilderTests
-    {
-        get
+    public static TheoryData<Func<IServiceProvider, IClientAuthentication>, string, string> ProvidedAuthenticationBuilderTests =>
+        new()
         {
-            yield return [(IServiceProvider p) => new BasicAuthentication().SetCredential("user", "name"), "Basic", "dXNlcjpuYW1l"];
-            yield return [(IServiceProvider p) => new BearerAuthentication().SetCredential("token"), "Bearer", "token"];
-        }
-    }
+            {p => new BasicAuthentication().SetCredential("user", "name"), "Basic", "dXNlcjpuYW1l"},
+            {p => new BearerAuthentication().SetCredential("token"), "Bearer", "token"}
+        };
 }

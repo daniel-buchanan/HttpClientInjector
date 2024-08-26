@@ -3,6 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <PackageId>HttpClientInjector</PackageId> 
+    <Version>1.0.0</Version> 
+    <Authors>Daniel Buchanan</Authors> 
+    <PackageTags>HttpClient Extensions</PackageTags> 
+    <Description>Provides </Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RootNamespace>HttpClientInjector</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -18,7 +18,7 @@ jobs:
   
   tests:
     runs-on: ubuntu-latest
-    name: tests
+    name: Tests
     steps:
       - uses: actions/checkout@v2
       - name: Build
@@ -39,7 +39,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          dotnet publish \
+          dotnet pack \
             ${{ github.workspace }}/src/HttpClientInjector/HttpClientInjector.csproj \
             -c Release \
             -p:Version=${FULL_PACKAGE_VERSION} \
@@ -53,6 +53,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    name: Publish
     needs: [build]
     steps:
     - name: Download Artifact

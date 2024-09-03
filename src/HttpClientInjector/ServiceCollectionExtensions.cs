@@ -9,13 +9,21 @@ namespace HttpClientInjector
 {
     public static class ServiceCollectionExtensions
     {
-        private static string GetHttpClientName<TInterface>()
+        private static string GetHttpClientName<T>()
         {
-            var type = typeof(TInterface);
+            var type = typeof(T);
             var name = $"{type.Namespace}.{type.Name}";
             return name;
         }
         
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="T"/>.
+        /// This means that in your constructor for <see cref="T"/> you can add <see cref="IHttp{T}"/> as a parameter.
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="builder"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IServiceCollection InjectHttpClientFor<T>(
             this IServiceCollection self,
             Action<IHttpClientConfigurationBuilder> builder)
@@ -31,6 +39,7 @@ namespace HttpClientInjector
                 builder(internalBuilder);
                 internalBuilder.Apply(client);
             });
+            self.AddTransient<IHttp<T>, Http<T>>();
             
             return self;
         }
@@ -42,13 +51,14 @@ namespace HttpClientInjector
             if (self.All(s => s.ServiceType != typeof(IHttpClientFactory)))
                 self.AddHttpClient();
             
-            var name = GetHttpClientName<TInterface>();
+            var name = GetHttpClientName<TImplementation>();
             self.AddHttpClient<IHttp<TInterface, TImplementation>, Http<TInterface, TImplementation>>(name, (provider, client) =>
             {
                 var internalBuilder = new HttpClientConfigurationBuilder(provider);
                 builder(internalBuilder);
                 internalBuilder.Apply(client);
             });
+            self.AddTransient<IHttp<TInterface, TImplementation>, Http<TInterface, TImplementation>>();
             
             return self;
         }

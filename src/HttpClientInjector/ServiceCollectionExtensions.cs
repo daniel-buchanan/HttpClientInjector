@@ -39,26 +39,26 @@ namespace HttpClientInjector
                 builder(internalBuilder);
                 internalBuilder.Apply(client);
             });
-            self.AddTransient<IHttp<T>, Http<T>>();
             
             return self;
         }
 
         public static IServiceCollection InjectHttpClientFor<TInterface, TImplementation>(
             this IServiceCollection self,
-            Action<IHttpClientConfigurationBuilder> builder)
+            Action<IHttpClientConfigurationBuilder> builder) 
+            where TInterface : class 
+            where TImplementation : class, TInterface
         {
             if (self.All(s => s.ServiceType != typeof(IHttpClientFactory)))
                 self.AddHttpClient();
             
-            var name = GetHttpClientName<TImplementation>();
+            var name = GetHttpClientName<TInterface>();
             self.AddHttpClient<IHttp<TInterface, TImplementation>, Http<TInterface, TImplementation>>(name, (provider, client) =>
             {
                 var internalBuilder = new HttpClientConfigurationBuilder(provider);
                 builder(internalBuilder);
                 internalBuilder.Apply(client);
             });
-            self.AddTransient<IHttp<TInterface, TImplementation>, Http<TInterface, TImplementation>>();
             
             return self;
         }
@@ -73,8 +73,8 @@ namespace HttpClientInjector
         public static IServiceCollection InjectHttpClientFor<TInterface, TImplementation>(
             this IServiceCollection self, 
             string baseUrl)
-            where TInterface : class
-            where TImplementation : class
+            where TInterface : class 
+            where TImplementation : class, TInterface
             => self.InjectHttpClientFor<TInterface, TImplementation>(b 
                 => b.WithBaseUrl(baseUrl).WithoutAuthentication());
         
@@ -93,8 +93,8 @@ namespace HttpClientInjector
             this IServiceCollection self, 
             string baseUrl,
             Action<IHttpClientConfigurationBuilder> builder)
-            where TInterface : class
-            where TImplementation : class
+            where TInterface : class 
+            where TImplementation : class, TInterface
             => self.InjectHttpClientFor<TInterface, TImplementation>(b =>
             {
                 b.WithBaseUrl(baseUrl);
@@ -114,8 +114,8 @@ namespace HttpClientInjector
             this IServiceCollection self, 
             string baseUrl, 
             Func<IServiceProvider, IBearerAuthentication> getBearerToken)
-            where TInterface : class
-            where TImplementation : class
+            where TInterface : class 
+            where TImplementation : class, TInterface
             => self.InjectHttpClientFor<TInterface, TImplementation>(b 
                 => b.WithBaseUrl(baseUrl)
                     .WithBearerAuthentication(getBearerToken));
@@ -133,8 +133,8 @@ namespace HttpClientInjector
             this IServiceCollection self, 
             string baseUrl, 
             Func<IServiceProvider, IBasicAuthentication> getBasicCredentials)
-            where TInterface : class
-            where TImplementation : class
+            where TInterface : class 
+            where TImplementation : class, TInterface
             => self.InjectHttpClientFor<TInterface, TImplementation>(b 
                 => b.WithBaseUrl(baseUrl)
                     .WithBasicAuthentication(getBasicCredentials));

@@ -20,10 +20,10 @@ namespace HttpClientInjector
         /// Inject an HttpClient for the given type <see cref="T"/>.
         /// This means that in your constructor for <see cref="T"/> you can add <see cref="IHttp{T}"/> as a parameter.
         /// </summary>
-        /// <param name="self"></param>
-        /// <param name="builder"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="builder">The builder method to configure the <see cref="HttpClient"/>.</param>
+        /// <typeparam name="T">The type to register the HttpClient for.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<T>(
             this IServiceCollection self,
             Action<IHttpClientConfigurationBuilder> builder)
@@ -43,6 +43,15 @@ namespace HttpClientInjector
             return self;
         }
 
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="TInterface"/> and <see cref="TImplementation"/>.
+        /// This means that in your constructor for <see cref="TImplementation"/> you can add <see cref="IHttp{TInterface, TImplementation}"/> as a parameter.
+        /// </summary>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="builder">The builder method to configure the <see cref="HttpClient"/>.</param>
+        /// <typeparam name="TInterface">The interface to with this should be registered</typeparam>
+        /// <typeparam name="TImplementation">The implementation into which this <see cref="IHttp{TInterface, TImplementation}"/> should be registered.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<TInterface, TImplementation>(
             this IServiceCollection self,
             Action<IHttpClientConfigurationBuilder> builder) 
@@ -63,6 +72,14 @@ namespace HttpClientInjector
             return self;
         }
         
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="T"/>.
+        /// This means that in your constructor for <see cref="T"/> you can add <see cref="IHttp{T}"/> as a parameter.
+        /// </summary>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="baseUrl">The base url for this <see cref="HttpClient" />.</param>
+        /// <typeparam name="T">The type to register the HttpClient for.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<T>(
             this IServiceCollection self, 
             string baseUrl)
@@ -70,6 +87,15 @@ namespace HttpClientInjector
             => self.InjectHttpClientFor<T>(b 
                 => b.WithBaseUrl(baseUrl).WithoutAuthentication());
 
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="TInterface"/> and <see cref="TImplementation"/>.
+        /// This means that in your constructor for <see cref="TImplementation"/> you can add <see cref="IHttp{TInterface, TImplementation}"/> as a parameter.
+        /// </summary>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="baseUrl">The base url for this <see cref="HttpClient" />.</param>
+        /// <typeparam name="TInterface">The interface to with this should be registered</typeparam>
+        /// <typeparam name="TImplementation">The implementation into which this <see cref="IHttp{TInterface, TImplementation}"/> should be registered.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<TInterface, TImplementation>(
             this IServiceCollection self, 
             string baseUrl)
@@ -78,6 +104,15 @@ namespace HttpClientInjector
             => self.InjectHttpClientFor<TInterface, TImplementation>(b 
                 => b.WithBaseUrl(baseUrl).WithoutAuthentication());
         
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="T"/>.
+        /// This means that in your constructor for <see cref="T"/> you can add <see cref="IHttp{T}"/> as a parameter.
+        /// </summary>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="baseUrl">The base url for this <see cref="HttpClient" />.</param>
+        /// <param name="builder">The builder method to configure the <see cref="HttpClient"/>.</param>
+        /// <typeparam name="T">The type to register the HttpClient for.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<T>(
             this IServiceCollection self,
             string baseUrl,
@@ -89,6 +124,16 @@ namespace HttpClientInjector
                     builder(b);
                 }));
         
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="TInterface"/> and <see cref="TImplementation"/>.
+        /// This means that in your constructor for <see cref="TImplementation"/> you can add <see cref="IHttp{TInterface, TImplementation}"/> as a parameter.
+        /// </summary>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="baseUrl">The base url for this <see cref="HttpClient" />.</param>
+        /// <param name="builder">The builder method to configure the <see cref="HttpClient"/>.</param>
+        /// <typeparam name="TInterface">The interface to with this should be registered</typeparam>
+        /// <typeparam name="TImplementation">The implementation into which this <see cref="IHttp{TInterface, TImplementation}"/> should be registered.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<TInterface, TImplementation>(
             this IServiceCollection self, 
             string baseUrl,
@@ -101,6 +146,15 @@ namespace HttpClientInjector
                 builder(b);
             });
         
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="T"/>.
+        /// This means that in your constructor for <see cref="T"/> you can add <see cref="IHttp{T}"/> as a parameter.
+        /// </summary>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="baseUrl">The base url for this <see cref="HttpClient" />.</param>
+        /// <param name="getBearerToken">A function which returns an instance of <see cref="IBearerAuthentication"/>, used to configure the <see cref="HttpClient"/>.</param>
+        /// <typeparam name="T">The type to register the HttpClient for.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<T>(
             this IServiceCollection self, 
             string baseUrl, 
@@ -110,6 +164,16 @@ namespace HttpClientInjector
                 => b.WithBaseUrl(baseUrl)
                     .WithBearerAuthentication(getBearerToken));
         
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="TInterface"/> and <see cref="TImplementation"/>.
+        /// This means that in your constructor for <see cref="TImplementation"/> you can add <see cref="IHttp{TInterface, TImplementation}"/> as a parameter.
+        /// </summary>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="baseUrl">The base url for this <see cref="HttpClient" />.</param>
+        /// <param name="getBearerToken">A function which returns an instance of <see cref="IBearerAuthentication"/>, used to configure the <see cref="HttpClient"/>.</param>
+        /// <typeparam name="TInterface">The interface to with this should be registered</typeparam>
+        /// <typeparam name="TImplementation">The implementation into which this <see cref="IHttp{TInterface, TImplementation}"/> should be registered.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<TInterface, TImplementation>(
             this IServiceCollection self, 
             string baseUrl, 
@@ -120,6 +184,15 @@ namespace HttpClientInjector
                 => b.WithBaseUrl(baseUrl)
                     .WithBearerAuthentication(getBearerToken));
         
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="T"/>.
+        /// This means that in your constructor for <see cref="T"/> you can add <see cref="IHttp{T}"/> as a parameter.
+        /// </summary>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="baseUrl">The base url for this <see cref="HttpClient" />.</param>
+        /// <param name="getBasicCredentials">A function which returns an instance of <see cref="IBasicAuthentication"/>, used to configure the <see cref="HttpClient"/>.</param>
+        /// <typeparam name="T">The type to register the HttpClient for.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<T>(
             this IServiceCollection self, 
             string baseUrl, 
@@ -129,6 +202,16 @@ namespace HttpClientInjector
                 => b.WithBaseUrl(baseUrl)
                     .WithBasicAuthentication(getBasicCredentials));
         
+        /// <summary>
+        /// Inject an HttpClient for the given type <see cref="TInterface"/> and <see cref="TImplementation"/>.
+        /// This means that in your constructor for <see cref="TImplementation"/> you can add <see cref="IHttp{TInterface, TImplementation}"/> as a parameter.
+        /// </summary>
+        /// <param name="self">The <see cref="IServiceCollection"/> to extend.</param>
+        /// <param name="baseUrl">The base url for this <see cref="HttpClient" />.</param>
+        /// <param name="getBasicCredentials">A function which returns an instance of <see cref="IBasicAuthentication"/>, used to configure the <see cref="HttpClient"/>.</param>
+        /// <typeparam name="TInterface">The interface to with this should be registered</typeparam>
+        /// <typeparam name="TImplementation">The implementation into which this <see cref="IHttp{TInterface, TImplementation}"/> should be registered.</typeparam>
+        /// <returns>The <see cref="IServiceCollection"/> acted on, for fluent usage.</returns>
         public static IServiceCollection InjectHttpClientFor<TInterface, TImplementation>(
             this IServiceCollection self, 
             string baseUrl, 
@@ -139,10 +222,23 @@ namespace HttpClientInjector
                 => b.WithBaseUrl(baseUrl)
                     .WithBasicAuthentication(getBasicCredentials));
 
+        /// <summary>
+        /// Get an <see cref="IHttp{T}"/> for the provided service <see cref="T"/>.
+        /// </summary>
+        /// <param name="provider">The <see cref="IServiceProvider"/> to fetch from.</param>
+        /// <typeparam name="T">The type of the service to get an <see cref="IHttp{T}"/>.</typeparam>
+        /// <returns>An instance of <see cref="IHttp{T}"/> or NULL.</returns>
         public static IHttp<T> GetHttpFor<T>(this IServiceProvider provider)
             where T : class
             => provider.GetService<IHttp<T>>();
         
+        /// <summary>
+        /// Get an <see cref="IHttp{TInterface, TImplementation}"/> for the provided service <see cref="TInterface"/>.
+        /// </summary>
+        /// <param name="provider">The <see cref="IServiceProvider"/> to fetch from.</param>
+        /// <typeparam name="TInterface">The interface type for <see cref="IHttp{TInterface, TImplementation}"/>.</typeparam>
+        /// <typeparam name="TImplementation">The implementation type for <see cref="IHttp{TInterface, TImplementation}"/>.</typeparam>
+        /// <returns>An instance of <see cref="IHttp{TInterface, TImplementation}"/> or NULL.</returns>
         public static IHttp<TInterface, TImplementation> GetHttpFor<TInterface, TImplementation>(this IServiceProvider provider)
             where TInterface : class
             where TImplementation : class

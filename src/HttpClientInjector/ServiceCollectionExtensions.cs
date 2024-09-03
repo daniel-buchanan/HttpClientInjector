@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using HttpClientInjector.Authentication;
 using HttpClientInjector.Configuration;
@@ -20,8 +21,11 @@ namespace HttpClientInjector
             Action<IHttpClientConfigurationBuilder> builder)
             where T : class
         {
+            if (self.All(s => s.ServiceType != typeof(IHttpClientFactory)))
+                self.AddHttpClient();
+            
             var name = GetHttpClientName<T>();
-            self.AddHttpClient<IHttpClient<T>, HttpClient<T>>(name, (provider, client) =>
+            self.AddHttpClient<IHttp<T>, Http<T>>(name, (provider, client) =>
             {
                 var internalBuilder = new HttpClientConfigurationBuilder(provider);
                 builder(internalBuilder);
@@ -67,8 +71,8 @@ namespace HttpClientInjector
                 => b.WithBaseUrl(baseUrl)
                     .WithBasicAuthentication(getBasicCredentials));
 
-        public static HttpClient GetHttpClientFor<T>(this IServiceProvider provider)
+        public static IHttp<T> GetHttpFor<T>(this IServiceProvider provider)
             where T : class
-            => provider.GetService<IHttpClientFactory>().CreateClient(GetHttpClientName<T>());
+            => provider.GetService<IHttp<T>>();
     }
 }

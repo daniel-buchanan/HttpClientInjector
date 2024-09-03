@@ -12,28 +12,48 @@ public class FullUpTests
     public FullUpTests()
     {
         _services = new ServiceCollection();
-        _services.AddHttpClient();
+        
     }
 
     [Fact]
     public void ConfiguredClientReturned()
     {
         // Arrange
+        _services.AddHttpClient();
         _services.InjectHttpClientFor<MockService>(b 
             => b.WithBaseUrl("http://test.com").WithoutAuthentication());
         var provider = _services.BuildServiceProvider();
 
         // Act
-        var client = provider.GetHttpClientFor<MockService>();
+        var client = provider.GetHttpFor<MockService>();
 
         // Assert
         client.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public void ClientInjectedSuccessfullyWithoutAddHttpClient()
+    {
+        // Arrange
+        _services.InjectHttpClientFor<MockService>(b => b.WithoutAuthentication());
+        _services.AddScoped<MockService>();
+        var provider = _services.BuildServiceProvider();
+
+        // Act
+        var service = provider.GetService<MockService>();
+        var factory = provider.GetService<IHttpClientFactory>();
+
+        // Assert
+        factory.Should().NotBeNull();
+        service.Should().NotBeNull();
+        service?.Client.Should().NotBeNull();
     }
 
     [Fact]
     public void ClientInjectedSuccessfully()
     {
         // Arrange
+        _services.AddHttpClient();
         _services.InjectHttpClientFor<MockService>(b => b.WithoutAuthentication());
         _services.AddScoped<MockService>();
         var provider = _services.BuildServiceProvider();
@@ -54,6 +74,7 @@ public class FullUpTests
         var computed = BasicAuthentication.EncodeHeader(username, password);
         
         // Arrange
+        _services.AddHttpClient();
         _services.InjectHttpClientFor<MockService>(b 
             => b.WithBasicAuthentication(username, password));
         _services.AddScoped<MockService>();
@@ -72,6 +93,7 @@ public class FullUpTests
         const string token = "abc123";
         
         // Arrange
+        _services.AddHttpClient();
         _services.InjectHttpClientFor<MockService>(b 
             => b.WithBearerAuthentication(token));
         _services.AddScoped<MockService>();

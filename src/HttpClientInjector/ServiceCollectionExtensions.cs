@@ -61,13 +61,20 @@ namespace HttpClientInjector
             if (self.All(s => s.ServiceType != typeof(IHttpClientFactory)))
                 self.AddHttpClient();
             
-            var name = GetHttpClientName<TInterface>();
-            self.AddHttpClient<IHttp<TInterface, TImplementation>, Http<TInterface, TImplementation>>(name, (provider, client) =>
-            {
-                var internalBuilder = new HttpClientConfigurationBuilder(provider);
-                builder(internalBuilder);
-                internalBuilder.Apply(client);
-            });
+            self.AddHttpClient<IHttp<TInterface>, Http<TInterface>>(GetHttpClientName<TInterface>(), 
+                (provider, client) =>
+                {
+                    var internalBuilder = new HttpClientConfigurationBuilder(provider);
+                    builder(internalBuilder);
+                    internalBuilder.Apply(client);
+                });
+            self.AddHttpClient<IHttp<TImplementation>, Http<TImplementation>>(GetHttpClientName<TImplementation>(), 
+                (provider, client) =>
+                {
+                    var internalBuilder = new HttpClientConfigurationBuilder(provider);
+                    builder(internalBuilder);
+                    internalBuilder.Apply(client);
+                });
             
             return self;
         }

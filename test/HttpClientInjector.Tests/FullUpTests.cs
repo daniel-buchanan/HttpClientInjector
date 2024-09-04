@@ -7,25 +7,19 @@ namespace HttpClientInjector.Tests;
 
 public class FullUpTests
 {
-    private readonly IServiceCollection _services;
-    
-    public FullUpTests()
-    {
-        _services = new ServiceCollection();
-        
-    }
+    private readonly IServiceCollection _services = new ServiceCollection();
 
     [Fact]
     public void ConfiguredClientReturned()
     {
         // Arrange
         _services.AddHttpClient();
-        _services.InjectHttpClientFor<MockService>(b 
+        _services.InjectHttpClientFor<IMockService>(b 
             => b.WithBaseUrl("http://test.com").WithoutAuthentication());
         var provider = _services.BuildServiceProvider();
 
         // Act
-        var client = provider.GetHttpFor<MockService>();
+        var client = provider.GetHttpFor<IMockService>();
 
         // Assert
         client.Should().NotBeNull();
@@ -35,12 +29,30 @@ public class FullUpTests
     public void ClientInjectedSuccessfullyWithoutAddHttpClient()
     {
         // Arrange
-        _services.InjectHttpClientFor<MockService>(b => b.WithoutAuthentication());
-        _services.AddScoped<MockService>();
+        _services.InjectHttpClientFor<IMockService>(b => b.WithoutAuthentication());
+        _services.AddScoped<IMockService, MockService>();
         var provider = _services.BuildServiceProvider();
 
         // Act
-        var service = provider.GetService<MockService>();
+        var service = provider.GetService<IMockService>();
+        var factory = provider.GetService<IHttpClientFactory>();
+
+        // Assert
+        factory.Should().NotBeNull();
+        service.Should().NotBeNull();
+        service?.Client.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public void ClientInjectedSuccessfullyWithConcreteImplementation()
+    {
+        // Arrange
+        _services.InjectHttpClientFor<MockService2>(b => b.WithoutAuthentication());
+        _services.AddScoped<MockService2>();
+        var provider = _services.BuildServiceProvider();
+
+        // Act
+        var service = provider.GetService<MockService2>();
         var factory = provider.GetService<IHttpClientFactory>();
 
         // Assert
@@ -54,12 +66,12 @@ public class FullUpTests
     {
         // Arrange
         _services.AddHttpClient();
-        _services.InjectHttpClientFor<MockService>(b => b.WithoutAuthentication());
-        _services.AddScoped<MockService>();
+        _services.InjectHttpClientFor<IMockService, MockService>(b => b.WithoutAuthentication());
+        _services.AddScoped<IMockService, MockService>();
         var provider = _services.BuildServiceProvider();
 
         // Act
-        var service = provider.GetService<MockService>();
+        var service = provider.GetService<IMockService>();
 
         // Assert
         service.Should().NotBeNull();
@@ -75,13 +87,13 @@ public class FullUpTests
         
         // Arrange
         _services.AddHttpClient();
-        _services.InjectHttpClientFor<MockService>(b 
+        _services.InjectHttpClientFor<IMockService>(b 
             => b.WithBasicAuthentication(username, password));
-        _services.AddScoped<MockService>();
+        _services.AddScoped<IMockService, MockService>();
         var provider = _services.BuildServiceProvider();
         
         // Act
-        var service = provider.GetRequiredService<MockService>();
+        var service = provider.GetRequiredService<IMockService>();
         
         // Assert
         AssertHeaders(service.Client, "Basic", computed);
@@ -94,13 +106,13 @@ public class FullUpTests
         
         // Arrange
         _services.AddHttpClient();
-        _services.InjectHttpClientFor<MockService>(b 
+        _services.InjectHttpClientFor<IMockService>(b 
             => b.WithBearerAuthentication(token));
-        _services.AddScoped<MockService>();
+        _services.AddScoped<IMockService, MockService>();
         var provider = _services.BuildServiceProvider();
         
         // Act
-        var service = provider.GetRequiredService<MockService>();
+        var service = provider.GetRequiredService<IMockService>();
         
         // Assert
         AssertHeaders(service.Client, "Bearer", token);

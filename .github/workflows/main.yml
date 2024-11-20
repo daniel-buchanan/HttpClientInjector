@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Tests
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Build
         shell: bash
         run: |
@@ -35,7 +35,7 @@ jobs:
     needs: [tests,sonar]
     name: Build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Build
         shell: bash
         run: |
@@ -45,7 +45,7 @@ jobs:
             -p:Version=${FULL_PACKAGE_VERSION} \
             -o ./output
       - name: Upload Package
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: package
           path: ./output
@@ -57,7 +57,7 @@ jobs:
     needs: [build]
     steps:
     - name: Download Artifact
-      uses: actions/download-artifact@v2.0.10
+      uses: actions/download-artifact@v4.1.8
       with:
         name: package
         path: ./output

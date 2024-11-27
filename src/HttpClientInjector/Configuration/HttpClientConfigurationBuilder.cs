@@ -52,5 +52,6 @@ public partial class HttpClientConfigurationBuilder(IServiceProvider provider) :
         _authentication?.Apply(client);
         client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue(_compression));
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_encoding));
+        ApplyCustomHeaders(client);
     }
 }

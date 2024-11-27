@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using HttpClientInjector.Authentication;
 
@@ -30,4 +31,9 @@ public interface IHttpClientConfigurationBuilder
     IHttpClientConfigurationBuilder WithJsonEncoding();
     IHttpClientConfigurationBuilder WithXmlEncoding();
     IHttpClientConfigurationBuilder WithCompression();
+
+    IHttpClientConfigurationBuilder WithCustomHeader(string key, string value);
+    IHttpClientConfigurationBuilder WithCustomHeader(KeyValuePair<string, string> pair);
+    IHttpClientConfigurationBuilder WithCustomHeader(string headerName, Func<IServiceProvider, string> builder);
+    IHttpClientConfigurationBuilder WithCustomHeader(Func<IServiceProvider, KeyValuePair<string, string>> builder);
 }
